@@ -1,0 +1,54 @@
+class Solution
+{
+    public:
+    //Function to return the minimum cost to react at bottom
+	//right cell from top left cell.
+    int minimumCostPath(vector<vector<int>>& grid) 
+    {
+             int n=grid.size();
+             //int m=grid[0].size();
+             
+             int nc[4]={0,+1,0,-1};
+             int nr[4]={-1,0,+1,0};
+             
+
+             priority_queue<pair<long long ,pair<int,int>>,vector<pair<long long ,pair<int,int>>>,greater<pair<long long ,pair<int,int>>>>q;
+            
+            
+            long long dis[n][n];
+         for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                dis[i][j] =1e18;
+            }
+        }
+                dis[0][0]=grid[0][0];
+               q.push({grid[0][0],{0,0}});
+               while(!q.empty())
+               {
+                   
+                    int r=q.top().second.first;
+                    int c=q.top().second.second;
+                 long long d=q.top().first;//
+                 q.pop();
+                    if(dis[r][c]<d) continue;
+                    for(int i=0;i<4;i++)
+                    {
+                        int ncc= c+ nc[i];
+                        int nrr=r+ nr[i];
+                    
+                        if(nrr<=n-1&&nrr>=0&&ncc>=0&&ncc<=n-1&&dis[nrr][ncc]>d+grid[nrr][ncc])
+                        {
+                          long long t= d+ grid[nrr][ncc];
+                            dis[nrr][ncc]=t;
+                            
+                            q.push({t,{nrr,ncc}});
+                            
+                        }
+                        
+                    }
+                   
+                   
+               }
+               return dis[n-1][n-1];
+    }
+};
